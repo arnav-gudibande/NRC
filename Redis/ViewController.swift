@@ -9,15 +9,17 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    let redisServer = Redis()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        redisServer.server("127.0.0.1", onPort: 6379)
+        redisServer.Command("Ping")
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
 
