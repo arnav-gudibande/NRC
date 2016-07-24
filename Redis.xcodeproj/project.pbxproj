@@ -131,6 +131,7 @@
 					8961DE2D1D42DD6800F9FCFC = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 644K27Q47A;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -342,6 +343,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Arnav-Gudibande.Redis";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -358,6 +360,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Arnav-Gudibande.Redis";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

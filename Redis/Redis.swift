@@ -9,13 +9,13 @@ class Redis: NSObject,  GCDAsyncSocketDelegate {
     /*============================================================
      // Server Open Connection
      ============================================================*/
-    func server(endPoint: String, onPort: UInt16){
+    func server(_ endPoint: String, onPort: UInt16){
         
         //Check For Socket Condition
         if !(Socket != nil) {
             
             //Assign Delegeate to Self Queue
-            Socket = GCDAsyncSocket(delegate: self, delegateQueue: dispatch_get_main_queue())
+            Socket = GCDAsyncSocket(delegate: self, delegateQueue: DispatchQueue.main)
             
         }
         
@@ -28,19 +28,19 @@ class Redis: NSObject,  GCDAsyncSocketDelegate {
         
         do{
             //Assign Function Constants
-            try Socket!.connectToHost(endPoint, onPort: onPort)
+            try Socket!.connect(toHost: endPoint, onPort: onPort)
         }catch {
             //Error
             print(err)
         }
         
         //Read Send Data
-        Socket?.readDataWithTimeout(2, tag: 1)
+        Socket?.readData(withTimeout: 2, tag: 1)
     }
     
     
     //Server Confirmation
-    func socket(sock: GCDAsyncSocket!, didConnectToHost host: String!, port: UInt16) {
+    func socket(_ sock: GCDAsyncSocket!, didConnectToHost host: String!, port: UInt16) {
         print("Connected to Redis!")
     }
     
@@ -48,8 +48,8 @@ class Redis: NSObject,  GCDAsyncSocketDelegate {
      // Read Data From Redis Server [NSUTF8StringEncoding]
      ============================================================*/
     
-    func socket(sock: GCDAsyncSocket!, didReadData data: NSData!, withTag tag: Int) {
-        let Recieved: NSString = NSString(data: data, encoding: NSUTF8StringEncoding)!
+    func socket(_ sock: GCDAsyncSocket!, didRead data: Data!, withTag tag: Int) {
+        let Recieved: NSString = NSString(data: data, encoding: String.Encoding.utf8.rawValue)!
         print(Recieved)
     }
     
@@ -57,10 +57,10 @@ class Redis: NSObject,  GCDAsyncSocketDelegate {
      // Send Command [I Will create Full SET and Upload it to Github]
      =================================================================*/
     
-    func Command(Command: String){
+    func Command(_ Command: String){
         let request: String = Command + "\r\n"
-        let data: NSData = request.dataUsingEncoding(NSUTF8StringEncoding)!
-        Socket!.writeData(data, withTimeout: 1.0, tag: 0)
+        let data: Data = request.data(using: String.Encoding.utf8)!
+        Socket!.write(data, withTimeout: 1.0, tag: 0)
         
     }
     
