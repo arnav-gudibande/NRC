@@ -7,15 +7,31 @@
 //
 
 import UIKit
+import CoreMotion
 
 class ViewController: UIViewController {
     
     let redisServer = Redis()
+    let manager = CMMotionManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Create Redis Server
         redisServer.server("127.0.0.1", onPort: 6379)
         redisServer.Command("Ping")
+        
+        // CoreMotion functions
+        manager.deviceMotionUpdateInterval = 0.01
+        
+        manager.startDeviceMotionUpdates(to: OperationQueue.main(), withHandler:{
+            deviceManager, error in
+            
+            print(deviceManager?.attitude.pitch)
+            print(deviceManager?.attitude.yaw)
+            
+        })
+    
     }
 
     override func didReceiveMemoryWarning() {
