@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     
     let redisServer = Redis()
     let manager = CMMotionManager()
-    let scale: Double = 0.01
+    let scale: Double = 0.02
     var yaw = -0.5
     var pitch: Double = 0
 
