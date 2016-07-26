@@ -9,6 +9,7 @@
 import UIKit
 import CoreMotion
 
+
 class ViewController: UIViewController, UITextFieldDelegate {
     
     let redisServer = Redis()
@@ -33,16 +34,21 @@ class ViewController: UIViewController, UITextFieldDelegate {
         i+=1
         
         if i%2 != 0 {
+            
             if let userTypedIP = ipAddress.text {
                 redisServer.server(userTypedIP, onPort: 6379)
             }
             redisServer.server(ipAddress.placeholder!, onPort: 6379)
             redisServer.Command("Ping")
-            startControl()
-            statusLabel.text = "Connected"
-            statusLabel.textColor = UIColor.green()
-            sender.setTitle("Shutdown Server", for: UIControlState.normal)
-            sender.setTitleColor(UIColor.red(), for: UIControlState.normal)
+            
+            if redisServer.value(forKey: "starting") != nil {
+                startControl()
+                statusLabel.text = "Connected"
+                statusLabel.textColor = UIColor.green()
+                sender.setTitle("Shutdown Server", for: UIControlState.normal)
+                sender.setTitleColor(UIColor.red(), for: UIControlState.normal)
+            }
+            
         } else if i%2==0 {
             redisServer.Command("SHUTDOWN")
             sender.setTitle("Connect to Server", for: UIControlState.normal)
@@ -50,6 +56,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             statusLabel.text = "Not Connected"
             statusLabel.textColor = UIColor.red()
         }
+        
         
     }
     
