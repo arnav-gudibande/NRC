@@ -13,7 +13,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     let redisServer = Redis()
     let manager = CMMotionManager()
-    let scale: Double = 0.01
+    let scale: Double = 0.007
     var yaw = -0.5
     var pitch: Double = 0
     var i = 0
@@ -56,7 +56,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func startControl() {
         redisServer.Command("set scl_pos_ee_des "+"\"" + "\(yaw) 0.8 \(pitch)" + "\"")
         //CoreMotion functions
-        manager.deviceMotionUpdateInterval = 0.1
+        manager.deviceMotionUpdateInterval = 0.07
         
         manager.startDeviceMotionUpdates(to: OperationQueue.main, withHandler: {
             deviceManager, error in
