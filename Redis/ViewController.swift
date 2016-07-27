@@ -20,7 +20,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var i = 0
 
     @IBOutlet weak var statusLabel: UILabel!
-    
     @IBOutlet weak var ipAddress: UITextField!
     
     @IBAction func resetRedis(_ sender: AnyObject) {
@@ -102,7 +101,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.ipAddress.placeholder = "10.21.160.61"
         self.ipAddress.delegate = self
         self.ipAddress.keyboardType = UIKeyboardType.numbersAndPunctuation
-        //ipAddress.returnKeyType =
     }
 
     override func didReceiveMemoryWarning() {
