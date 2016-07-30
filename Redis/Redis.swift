@@ -5,11 +5,12 @@ class Redis: NSObject,  GCDAsyncSocketDelegate {
     
     //Alloc GCDAsyncSocket
     var Socket: GCDAsyncSocket?
+    let err: NSError? = nil
     
     /*============================================================
      // Server Open Connection
      ============================================================*/
-    func server(_ endPoint: String, onPort: UInt16){
+    func server(endPoint: String, onPort: UInt16){
         
         //Check For Socket Condition
         if !(Socket != nil) {
@@ -18,8 +19,6 @@ class Redis: NSObject,  GCDAsyncSocketDelegate {
             Socket = GCDAsyncSocket(delegate: self, delegateQueue: DispatchQueue.main)
             
         }
-        
-        var err: NSError?
         
         /*============================================================
          GCDAsyncSocket ConnectToHost Throw Error so you must handle
@@ -40,7 +39,7 @@ class Redis: NSObject,  GCDAsyncSocketDelegate {
     
     
     //Server Confirmation
-    func socket(_ sock: GCDAsyncSocket!, didConnectToHost host: String!, port: UInt16) {
+    func socket(_ sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
         print("Connected to Redis!")
     }
     
@@ -48,8 +47,8 @@ class Redis: NSObject,  GCDAsyncSocketDelegate {
      // Read Data From Redis Server [NSUTF8StringEncoding]
      ============================================================*/
     
-    func socket(_ sock: GCDAsyncSocket!, didRead data: Data!, withTag tag: Int) {
-        let Recieved: NSString = NSString(data: data, encoding: String.Encoding.utf8.rawValue)!
+    func socket(_ sock: GCDAsyncSocket, didRead data: Data, withTag tag: Int) {
+        let Recieved: NSString = NSString(data: data as Data, encoding: String.Encoding.utf8.rawValue)!
         print(Recieved)
     }
     
@@ -57,10 +56,10 @@ class Redis: NSObject,  GCDAsyncSocketDelegate {
      // Send Command [I Will create Full SET and Upload it to Github]
      =================================================================*/
     
-    func Command(_ Command: String){
+    func Command(Command: String){
         let request: String = Command + "\r\n"
-        let data: Data = request.data(using: String.Encoding.utf8)!
-        Socket!.write(data, withTimeout: 1.0, tag: 0)
+        let data: NSData = request.data(using: String.Encoding.utf8)!
+        Socket!.write(data as Data, withTimeout: 1.0, tag: 0)
         
     }
     

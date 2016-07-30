@@ -10,6 +10,7 @@
 		2D8899A1B6A14F6243CF45B6 /* Pods_Redis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 965EA5BE163027360E7E730A /* Pods_Redis.framework */; };
 		8932A2C11D43194000C0331A /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8932A2C01D43194000C0331A /* CocoaAsyncSocket.framework */; };
 		8932A2C31D43197800C0331A /* Redis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8932A2C21D43197800C0331A /* Redis.swift */; };
+		893AA78D1D4C0A7E00B40B75 /* Sources in Frameworks */ = {isa = PBXBuildFile; fileRef = 893AA78C1D4C0A7E00B40B75 /* Sources */; };
 		8961DE321D42DD6800F9FCFC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8961DE311D42DD6800F9FCFC /* AppDelegate.swift */; };
 		8961DE341D42DD6800F9FCFC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8961DE331D42DD6800F9FCFC /* ViewController.swift */; };
 		8961DE371D42DD6800F9FCFC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8961DE351D42DD6800F9FCFC /* Main.storyboard */; };
@@ -22,6 +23,8 @@
 		116806C657A595321C2A95D4 /* Pods-Redis.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Redis.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Redis/Pods-Redis.debug.xcconfig"; sourceTree = "<group>"; };
 		8932A2C01D43194000C0331A /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaAsyncSocket.framework; path = "Pods/../build/Debug-iphoneos/CocoaAsyncSocket/CocoaAsyncSocket.framework"; sourceTree = "<group>"; };
 		8932A2C21D43197800C0331A /* Redis.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Redis.swift; sourceTree = "<group>"; };
+		893AA78A1D4C0A5000B40B75 /* Kitura-redis-master */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "Kitura-redis-master"; path = "../../../../Downloads/Kitura-redis-master"; sourceTree = "<group>"; };
+		893AA78C1D4C0A7E00B40B75 /* Sources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Sources; path = "../../../../Downloads/Kitura-redis-master/Sources"; sourceTree = "<group>"; };
 		8961DE2E1D42DD6800F9FCFC /* Redis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Redis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8961DE311D42DD6800F9FCFC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8961DE331D42DD6800F9FCFC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -37,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				893AA78D1D4C0A7E00B40B75 /* Sources in Frameworks */,
 				2D8899A1B6A14F6243CF45B6 /* Pods_Redis.framework in Frameworks */,
 				8932A2C11D43194000C0331A /* CocoaAsyncSocket.framework in Frameworks */,
 			);
@@ -48,6 +52,8 @@
 		86D08D20804BD38C85B59553 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				893AA78C1D4C0A7E00B40B75 /* Sources */,
+				893AA78A1D4C0A5000B40B75 /* Kitura-redis-master */,
 				8932A2C01D43194000C0331A /* CocoaAsyncSocket.framework */,
 				965EA5BE163027360E7E730A /* Pods_Redis.framework */,
 			);

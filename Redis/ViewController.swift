@@ -8,35 +8,36 @@
 
 import UIKit
 import CoreMotion
+import Foundation
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
     
     let redisServer = Redis()
     let manager = CMMotionManager()
-    let scale: Double = 0.03
-    var yaw = -0.5
-    var pitch: Double = 0
+    let scale = 1
+    var yaw = 32768
+    var pitch = 32768
     var i = 0
 
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var ipAddress: UITextField!
     
     @IBAction func resetRedis(_ sender: AnyObject) {
-        
-        yaw = -0.5
+        yaw = 0
         pitch = 0
-        redisServer.Command("set scl_pos_ee_des "+"\"" + "\(yaw) 0.8 \(pitch)" + "\"")
-        
+        redisServer.Command(Command: "set yaw " + "\(convertToHex(num: yaw))")
+        redisServer.Command(Command: "set pitch " + "\(convertToHex(num: pitch))")
     }
     
     @IBAction func connectToServer(_ sender: UIButton) {
             
         if let userTypedIP = ipAddress.text {
-            redisServer.server(userTypedIP, onPort: 6379)
+            redisServer.server(endPoint: userTypedIP, onPort: 6379)
         }
         
-        redisServer.server(ipAddress.placeholder!, onPort: 6379)
-        redisServer.Command("Ping")
+        //Setup Redis and test connection
+        redisServer.server(endPoint: ipAddress.placeholder!, onPort: 6379)
+        redisServer.Command(Command: "Ping")
         
         startControl()
         
@@ -47,8 +48,6 @@ class ViewController: UIViewController {
     
     func startControl() {
         
-        redisServer.Command("set scl_pos_ee_des "+"\"" + "\(yaw) 0.8 \(pitch)" + "\"")
-        
         //CoreMotion functions
         manager.deviceMotionUpdateInterval = 0.1
         
@@ -58,13 +57,13 @@ class ViewController: UIViewController {
                 
                 // Tilt forward
                 self.pitch -= self.scale
-                self.redisServer.Command("set scl_pos_ee_des "+"\"" + "\(self.yaw) 0.8 \(self.pitch)" + "\"")
+                self.redisServer.Command(Command: "set pitch " + "\(self.convertToHex(num: self.pitch))")
                 
             } else if ((deviceManager?.attitude.pitch)! * 180.0/M_PI) >= 75.00 {
                 
                 // Tilt backward
                 self.pitch += self.scale
-                self.redisServer.Command("set scl_pos_ee_des "+"\"" + "\(self.yaw) 0.8 \(self.pitch)" + "\"")
+                self.redisServer.Command(Command: "set pitch " + "\(self.convertToHex(num: self.pitch))")
                 
             }
             
@@ -72,13 +71,13 @@ class ViewController: UIViewController {
                 
                 // Tilt right
                 self.yaw += self.scale
-                self.redisServer.Command("set scl_pos_ee_des "+"\"" + "\(self.yaw) 0.8 \(self.pitch)" + "\"")
+                self.redisServer.Command(Command: "set yaw " + "\(self.convertToHex(num: self.yaw))")
                 
             } else if ((deviceManager?.attitude.yaw)! * 180.0/M_PI) >= 25.00 {
                 
                 // Tilt Left
                 self.yaw -= self.scale
-                self.redisServer.Command("set scl_pos_ee_des "+"\"" + "\(self.yaw) 0.8 \(self.pitch)" + "\"")
+                self.redisServer.Command(Command: "set pitch " + "\(self.convertToHex(num: self.yaw))")
                 
             }
             
@@ -90,8 +89,20 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        self.ipAddress.placeholder = "10.21.160.61"
-        
+        self.ipAddress.placeholder = "127.0.0.1"
+        self.ipAddress.delegate = self
+        self.ipAddress.keyboardType = UIKeyboardType.numbersAndPunctuation
+        self.ipAddress.returnKeyType = UIReturnKeyType.done
+
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
+    
+    func convertToHex(num: Int) -> String {
+        return "0x" + String(format:"%2X", num)
     }
 
     override func didReceiveMemoryWarning() {

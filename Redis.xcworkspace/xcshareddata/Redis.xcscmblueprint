@@ -1,0 +1,37 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "CB3944D9663BB4DC4F867840CDF4D720D6AE0710",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "43C021D2F0E746BBB29CA4E06229F111196D4871" : 0,
+    "CCF984214700D2A903656BB151000EB6798D0AF8" : 0,
+    "CB3944D9663BB4DC4F867840CDF4D720D6AE0710" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "103BD2C7-F045-467F-939A-F4892603AC34",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "43C021D2F0E746BBB29CA4E06229F111196D4871" : "..\/..\/..\/Downloads\/Kitura-redis-master\/Packages\/Socket-0.6.2",
+    "CCF984214700D2A903656BB151000EB6798D0AF8" : "..\/..\/..\/Downloads\/Kitura-redis-master\/Packages\/Kitura-Sys-0.24.0\/Kitura-Build",
+    "CB3944D9663BB4DC4F867840CDF4D720D6AE0710" : "Redis\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Redis",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Redis.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/IBM-Swift\/BlueSocket.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "43C021D2F0E746BBB29CA4E06229F111196D4871"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/arnav-gudibande\/NRC.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CB3944D9663BB4DC4F867840CDF4D720D6AE0710"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/IBM-Swift\/Kitura-Build.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CCF984214700D2A903656BB151000EB6798D0AF8"
+    }
+  ]
+}
