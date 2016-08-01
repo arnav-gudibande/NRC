@@ -22,13 +22,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var ipAddress: UITextField!
     
-    @IBAction func resetRedis(_ sender: AnyObject) {
-        yaw = 0
-        pitch = 0
-        redisServer.Command(Command: "set yaw " + "\(convertToHex(num: yaw))")
-        redisServer.Command(Command: "set pitch " + "\(convertToHex(num: pitch))")
-    }
-    
     @IBAction func connectToServer(_ sender: UIButton) {
             
         if let userTypedIP = ipAddress.text {
@@ -77,7 +70,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 
                 // Tilt Left
                 self.yaw -= self.scale
-                self.redisServer.Command(Command: "set pitch " + "\(self.convertToHex(num: self.yaw))")
+                self.redisServer.Command(Command: "set yaw " + "\(self.convertToHex(num: self.yaw))")
                 
             }
             
@@ -89,7 +82,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        self.ipAddress.placeholder = "127.0.0.1"
+        self.ipAddress.placeholder = "10.0.0.206"
         self.ipAddress.delegate = self
         self.ipAddress.keyboardType = UIKeyboardType.numbersAndPunctuation
         self.ipAddress.returnKeyType = UIReturnKeyType.done
