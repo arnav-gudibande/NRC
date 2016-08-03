@@ -35,6 +35,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Reset Position"/>
                                 <connections>
+                                    <action selector="resetPosition:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kfD-1W-fpf"/>
                                     <action selector="resetRedis:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BJA-Y9-4wf"/>
                                 </connections>
                             </button>

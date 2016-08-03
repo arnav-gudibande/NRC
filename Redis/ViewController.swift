@@ -14,7 +14,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     let redisServer = Redis()
     let manager = CMMotionManager()
-    let scale = 1
+    let scale = 200
     var yaw = 32768
     var pitch = 32768
     var i = 0
@@ -39,6 +39,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
     }
     
+    @IBAction func resetPosition(_ sender: AnyObject) {
+        yaw = 32768
+        pitch = 32768
+        self.redisServer.Command(Command: "set pitch " + "\(self.convertToHex(num: self.pitch))")
+        self.redisServer.Command(Command: "set yaw " + "\(self.convertToHex(num: self.yaw))")
+    }
+    
     func startControl() {
         
         //CoreMotion functions
@@ -46,13 +53,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         manager.startDeviceMotionUpdates(to: OperationQueue.main, withHandler: { deviceManager, error in
             
-            if ((deviceManager?.attitude.pitch)! * 180.0/M_PI) <= 25.00 {
+            if ((deviceManager?.attitude.pitch)! * 180.0/M_PI) <= 5.00 {
                 
                 // Tilt forward
                 self.pitch -= self.scale
                 self.redisServer.Command(Command: "set pitch " + "\(self.convertToHex(num: self.pitch))")
                 
-            } else if ((deviceManager?.attitude.pitch)! * 180.0/M_PI) >= 75.00 {
+            } else if ((deviceManager?.attitude.pitch)! * 180.0/M_PI) >= 85.00 {
                 
                 // Tilt backward
                 self.pitch += self.scale
@@ -60,13 +67,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 
             }
             
-            if ((deviceManager?.attitude.yaw)! * 180.0/M_PI) <= -25.00 {
+            if ((deviceManager?.attitude.yaw)! * 180.0/M_PI) <= -40.00 {
                 
                 // Tilt right
                 self.yaw += self.scale
                 self.redisServer.Command(Command: "set yaw " + "\(self.convertToHex(num: self.yaw))")
                 
-            } else if ((deviceManager?.attitude.yaw)! * 180.0/M_PI) >= 25.00 {
+            } else if ((deviceManager?.attitude.yaw)! * 180.0/M_PI) >= 40.00 {
                 
                 // Tilt Left
                 self.yaw -= self.scale
@@ -82,7 +89,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        self.ipAddress.placeholder = "10.0.0.206"
+        self.ipAddress.placeholder = "10.21.160.61"
         self.ipAddress.delegate = self
         self.ipAddress.keyboardType = UIKeyboardType.numbersAndPunctuation
         self.ipAddress.returnKeyType = UIReturnKeyType.done
@@ -95,7 +102,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     func convertToHex(num: Int) -> String {
-        return "0x" + String(format:"%2X", num)
+        return String(num)
     }
 
     override func didReceiveMemoryWarning() {
