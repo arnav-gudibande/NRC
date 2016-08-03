@@ -13,9 +13,9 @@
 		893AA78D1D4C0A7E00B40B75 /* Sources in Frameworks */ = {isa = PBXBuildFile; fileRef = 893AA78C1D4C0A7E00B40B75 /* Sources */; };
 		8961DE321D42DD6800F9FCFC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8961DE311D42DD6800F9FCFC /* AppDelegate.swift */; };
 		8961DE341D42DD6800F9FCFC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8961DE331D42DD6800F9FCFC /* ViewController.swift */; };
-		8961DE371D42DD6800F9FCFC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8961DE351D42DD6800F9FCFC /* Main.storyboard */; };
 		8961DE391D42DD6800F9FCFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8961DE381D42DD6800F9FCFC /* Assets.xcassets */; };
 		8961DE3C1D42DD6800F9FCFC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8961DE3A1D42DD6800F9FCFC /* LaunchScreen.storyboard */; };
+		896AA5901D527DA100C7184D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 896AA58E1D527DA100C7184D /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,10 +28,10 @@
 		8961DE2E1D42DD6800F9FCFC /* Redis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Redis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8961DE311D42DD6800F9FCFC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8961DE331D42DD6800F9FCFC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		8961DE361D42DD6800F9FCFC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8961DE381D42DD6800F9FCFC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8961DE3B1D42DD6800F9FCFC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8961DE3D1D42DD6800F9FCFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		896AA58F1D527DA100C7184D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "../../../../../Downloads/NRC-d6cfccd5538abcdaf9ee41b9441cf3a4327253e3/Redis/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
 		965EA5BE163027360E7E730A /* Pods_Redis.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Redis.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -84,7 +84,7 @@
 				8961DE311D42DD6800F9FCFC /* AppDelegate.swift */,
 				8961DE331D42DD6800F9FCFC /* ViewController.swift */,
 				8932A2C21D43197800C0331A /* Redis.swift */,
-				8961DE351D42DD6800F9FCFC /* Main.storyboard */,
+				896AA58E1D527DA100C7184D /* Main.storyboard */,
 				8961DE381D42DD6800F9FCFC /* Assets.xcassets */,
 				8961DE3A1D42DD6800F9FCFC /* LaunchScreen.storyboard */,
 				8961DE3D1D42DD6800F9FCFC /* Info.plist */,
@@ -164,9 +164,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				896AA5901D527DA100C7184D /* Main.storyboard in Resources */,
 				8961DE3C1D42DD6800F9FCFC /* LaunchScreen.storyboard in Resources */,
 				8961DE391D42DD6800F9FCFC /* Assets.xcassets in Resources */,
-				8961DE371D42DD6800F9FCFC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,20 +234,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		8961DE351D42DD6800F9FCFC /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8961DE361D42DD6800F9FCFC /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		8961DE3A1D42DD6800F9FCFC /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				8961DE3B1D42DD6800F9FCFC /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		896AA58E1D527DA100C7184D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				896AA58F1D527DA100C7184D /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -290,7 +290,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -329,7 +329,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
