@@ -14,28 +14,52 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     let redisServer = Redis()
     let manager = CMMotionManager()
-    let scale = 200
+    let yscale = 200
+    let pscale = 400
     var yaw = 32768
     var pitch = 32768
-    var i = 0
+    var i = 2
     
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var ipAddress: UITextField!
+    @IBOutlet weak var connectButton: UIButton!
+    @IBOutlet weak var resetButton: UIButton!
+    @IBOutlet weak var titleLabel: UILabel!
     
     @IBAction func connectToServer(_ sender: UIButton) {
         
-        if let userTypedIP = ipAddress.text {
-            redisServer.server(endPoint: userTypedIP, onPort: 6379)
+        if i%2==0 {
+            
+            connect()
+            startControl()
+            
+            statusLabel.text = "Connected"
+            statusLabel.textColor = UIColor.green()
+            connectButton.setTitleColor(UIColor.red(), for: UIControlState.normal)
+            connectButton.setTitle("Disconnect from Server", for: UIControlState.normal)
+            resetButton.isHidden = false
+            
+            titleLabel.isHidden = true
+            ipAddress.isHidden = true
+            connectButton.frame.origin = CGPoint(x: 16, y: 80)
+            
+            i+=1
+            
+        } else if i%2 != 0 {
+            
+            redisServer.Command(Command: "quit")
+            connectButton.setTitleColor(UIColor.blue(), for: UIControlState.normal)
+            connectButton.setTitle("Connect to Server", for: UIControlState.normal)
+            resetButton.isHidden = true
+            
+            statusLabel.text = "Not Connected"
+            statusLabel.textColor = UIColor.red()
+            titleLabel.isHidden = false
+            ipAddress.isHidden = false
+            connectButton.frame.origin = CGPoint(x: 16, y: 209)
+            
+            i+=1
         }
-        
-        //Setup Redis and test connection
-        redisServer.server(endPoint: ipAddress.placeholder!, onPort: 6379)
-        redisServer.Command(Command: "Ping")
-        
-        startControl()
-        
-        statusLabel.text = "Connected"
-        statusLabel.textColor = UIColor.green()
         
     }
     
@@ -44,6 +68,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
         pitch = 32768
         self.redisServer.Command(Command: "set pitch " + "\(self.convertToHex(num: self.pitch))")
         self.redisServer.Command(Command: "set yaw " + "\(self.convertToHex(num: self.yaw))")
+    }
+    
+    func connect() {
+        if let userTypedIP = ipAddress.text {
+            redisServer.server(endPoint: userTypedIP, onPort: 6379)
+        }
+        
+        //Setup Redis and test connection
+        redisServer.server(endPoint: ipAddress.placeholder!, onPort: 6379)
+        redisServer.Command(Command: "Ping")
     }
     
     func startControl() {
@@ -56,13 +90,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
             if ((deviceManager?.attitude.pitch)! * 180.0/M_PI) <= 5.00 {
                 
                 // Tilt forward
-                self.pitch -= self.scale
+                self.pitch -= self.pscale
                 self.redisServer.Command(Command: "set pitch " + "\(self.convertToHex(num: self.pitch))")
                 
             } else if ((deviceManager?.attitude.pitch)! * 180.0/M_PI) >= 85.00 {
                 
                 // Tilt backward
-                self.pitch += self.scale
+                self.pitch += self.pscale
                 self.redisServer.Command(Command: "set pitch " + "\(self.convertToHex(num: self.pitch))")
                 
             }
@@ -70,13 +104,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
             if ((deviceManager?.attitude.yaw)! * 180.0/M_PI) <= -40.00 {
                 
                 // Tilt right
-                self.yaw += self.scale
+                self.yaw += self.yscale
                 self.redisServer.Command(Command: "set yaw " + "\(self.convertToHex(num: self.yaw))")
                 
             } else if ((deviceManager?.attitude.yaw)! * 180.0/M_PI) >= 40.00 {
                 
                 // Tilt Left
-                self.yaw -= self.scale
+                self.yaw -= self.yscale
                 self.redisServer.Command(Command: "set yaw " + "\(self.convertToHex(num: self.yaw))")
                 
             }
@@ -93,7 +127,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.ipAddress.delegate = self
         self.ipAddress.keyboardType = UIKeyboardType.numbersAndPunctuation
         self.ipAddress.returnKeyType = UIReturnKeyType.done
-        
+        self.resetButton.isHidden = true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
