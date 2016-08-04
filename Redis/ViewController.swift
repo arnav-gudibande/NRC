@@ -9,22 +9,30 @@
 import UIKit
 import CoreMotion
 import Foundation
+import AudioToolbox
 
 class ViewController: UIViewController, UITextFieldDelegate {
     
     let redisServer = Redis()
     let manager = CMMotionManager()
-    let yscale = 200
-    let pscale = 400
+    let yscale = 150
+    let pscale = 1000
     var yaw = 32768
     var pitch = 32768
     var i = 2
+    
     
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var ipAddress: UITextField!
     @IBOutlet weak var connectButton: UIButton!
     @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var yawLabel: UILabel!
+    @IBOutlet weak var pitchLabel: UILabel!
+    @IBOutlet weak var yawDisplay: UILabel!
+    @IBOutlet weak var pitchDisplay: UILabel!
+    @IBOutlet weak var sliderLabel: UILabel!
+    @IBOutlet weak var sliderVal: UISlider!
     
     @IBAction func connectToServer(_ sender: UIButton) {
         
@@ -35,19 +43,39 @@ class ViewController: UIViewController, UITextFieldDelegate {
             
             statusLabel.text = "Connected"
             statusLabel.textColor = UIColor.green()
+            
+            UIView.animate(withDuration: 0.7, animations: { () -> Void in
+                var connectFrame : CGRect = self.connectButton.frame
+                connectFrame.origin.y-=133
+                self.connectButton.frame = connectFrame
+            })
+            
             connectButton.setTitleColor(UIColor.red(), for: UIControlState.normal)
             connectButton.setTitle("Disconnect from Server", for: UIControlState.normal)
             resetButton.isHidden = false
-            
             titleLabel.isHidden = true
             ipAddress.isHidden = true
-            connectButton.frame.origin = CGPoint(x: 16, y: 80)
+            
+            self.yawLabel.isHidden = false
+            self.yawDisplay.isHidden = false
+            self.pitchLabel.isHidden = false
+            self.pitchDisplay.isHidden = false
+            
+            yawDisplay.text = String(yaw)
+            pitchDisplay.text = String(pitch)
             
             i+=1
             
         } else if i%2 != 0 {
             
             redisServer.Command(Command: "quit")
+            
+            UIView.animate(withDuration: 0.7, animations: { () -> Void in
+                var connectFrame : CGRect = self.connectButton.frame
+                connectFrame.origin.y+=133
+                self.connectButton.frame = connectFrame
+            })
+            
             connectButton.setTitleColor(UIColor.blue(), for: UIControlState.normal)
             connectButton.setTitle("Connect to Server", for: UIControlState.normal)
             resetButton.isHidden = true
@@ -56,7 +84,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
             statusLabel.textColor = UIColor.red()
             titleLabel.isHidden = false
             ipAddress.isHidden = false
-            connectButton.frame.origin = CGPoint(x: 16, y: 209)
+            
+            self.resetButton.isHidden = true
+            self.yawLabel.isHidden = true
+            self.yawDisplay.isHidden = true
+            self.pitchLabel.isHidden = true
+            self.pitchDisplay.isHidden = true
             
             i+=1
         }
@@ -68,6 +101,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         pitch = 32768
         self.redisServer.Command(Command: "set pitch " + "\(self.convertToHex(num: self.pitch))")
         self.redisServer.Command(Command: "set yaw " + "\(self.convertToHex(num: self.yaw))")
+        self.updateLabels()
     }
     
     func connect() {
@@ -78,7 +112,15 @@ class ViewController: UIViewController, UITextFieldDelegate {
         //Setup Redis and test connection
         redisServer.server(endPoint: ipAddress.placeholder!, onPort: 6379)
         redisServer.Command(Command: "Ping")
+        
+        yaw = 32768
+        pitch = 32768
+        self.redisServer.Command(Command: "set pitch " + "\(self.convertToHex(num: self.pitch))")
+        self.redisServer.Command(Command: "set yaw " + "\(self.convertToHex(num: self.yaw))")
     }
+    
+    // Yaw Limits -- 28000, 35000
+    // Pitch Limits -- 20000, 55000
     
     func startControl() {
         
@@ -87,37 +129,74 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         manager.startDeviceMotionUpdates(to: OperationQueue.main, withHandler: { deviceManager, error in
             
-            if ((deviceManager?.attitude.pitch)! * 180.0/M_PI) <= 5.00 {
+            if ((deviceManager?.attitude.pitch)! * 180.0/M_PI) <= 10.00 {
                 
                 // Tilt forward
-                self.pitch -= self.pscale
-                self.redisServer.Command(Command: "set pitch " + "\(self.convertToHex(num: self.pitch))")
+                self.cutoff(v: &self.pitch, t:"P", c: 25000, bool: false)
                 
-            } else if ((deviceManager?.attitude.pitch)! * 180.0/M_PI) >= 85.00 {
+                self.redisServer.Command(Command: "set pitch " + "\(self.convertToHex(num: self.pitch))")
+                self.updateLabels()
+                
+            } else if ((deviceManager?.attitude.pitch)! * 180.0/M_PI) >= 75.00 {
                 
                 // Tilt backward
-                self.pitch += self.pscale
+                self.cutoff(v: &self.pitch, t:"P", c: 50000, bool: true)
                 self.redisServer.Command(Command: "set pitch " + "\(self.convertToHex(num: self.pitch))")
-                
+                self.updateLabels()
             }
             
             if ((deviceManager?.attitude.yaw)! * 180.0/M_PI) <= -40.00 {
                 
                 // Tilt right
-                self.yaw += self.yscale
+                self.cutoff(v: &self.yaw, t:"Y", c: 29000, bool: false)
                 self.redisServer.Command(Command: "set yaw " + "\(self.convertToHex(num: self.yaw))")
+                self.updateLabels()
                 
             } else if ((deviceManager?.attitude.yaw)! * 180.0/M_PI) >= 40.00 {
                 
                 // Tilt Left
-                self.yaw -= self.yscale
+                self.cutoff(v: &self.yaw, t:"Y", c: 35000, bool: true)
                 self.redisServer.Command(Command: "set yaw " + "\(self.convertToHex(num: self.yaw))")
+                self.updateLabels()
                 
             }
             
             
         })
         
+    }
+    
+    func cutoff(v: inout Int, t: String, c: Int, bool: Bool) { // True --> +, False --> -
+        
+        if !bool {
+            if v-1 >= c {
+                if t=="P" {
+                    v -= pscale
+                } else if t=="Y" {
+                    v -= yscale
+                }
+            } else {
+                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            }
+        } else if bool {
+            if v+1 <= c {
+                if t=="P" {
+                    v += pscale
+                } else if t=="Y" {
+                    v += yscale
+                }
+            } else {
+                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            }
+        }
+
+    }
+    
+    func updateLabels() {
+        DispatchQueue.main.asynchronously(execute: {
+            self.yawDisplay.text = String(self.yaw)
+            self.pitchDisplay.text = String(self.pitch)
+        })
     }
     
     override func viewDidLoad() {
@@ -127,7 +206,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.ipAddress.delegate = self
         self.ipAddress.keyboardType = UIKeyboardType.numbersAndPunctuation
         self.ipAddress.returnKeyType = UIReturnKeyType.done
+        
         self.resetButton.isHidden = true
+        self.yawLabel.isHidden = true
+        self.yawDisplay.isHidden = true
+        self.pitchLabel.isHidden = true
+        self.pitchDisplay.isHidden = true
+        self.sliderVal.isHidden = true
+        self.sliderLabel.isHidden = true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
