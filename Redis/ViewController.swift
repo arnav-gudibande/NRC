@@ -60,6 +60,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
             self.yawDisplay.isHidden = false
             self.pitchLabel.isHidden = false
             self.pitchDisplay.isHidden = false
+            self.sliderVal.isHidden = false
+            self.sliderLabel.isHidden = false
             
             yawDisplay.text = String(yaw)
             pitchDisplay.text = String(pitch)
@@ -90,6 +92,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
             self.yawDisplay.isHidden = true
             self.pitchLabel.isHidden = true
             self.pitchDisplay.isHidden = true
+            self.sliderLabel.isHidden = true
+            self.sliderVal.isHidden = true
             
             i+=1
         }
@@ -101,6 +105,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
         pitch = 32768
         self.redisServer.Command(Command: "set pitch " + "\(self.convertToHex(num: self.pitch))")
         self.redisServer.Command(Command: "set yaw " + "\(self.convertToHex(num: self.yaw))")
+        self.redisServer.Command(Command: "set slider \(32768)")
+        self.sliderVal.setValue(32768, animated: true)
         self.updateLabels()
     }
     
@@ -161,6 +167,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 
             }
             
+            self.redisServer.Command(Command: "set slider \(Int(self.sliderVal.value))")
             
         })
         
