@@ -78,7 +78,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 self.connectButton.frame = connectFrame
             })
             
-            connectButton.setTitleColor(UIColor.blue(), for: UIControlState.normal)
+            connectButton.setTitleColor(UIColor.orange(), for: UIControlState.normal)
             connectButton.setTitle("Connect to Server", for: UIControlState.normal)
             resetButton.isHidden = true
             
@@ -127,6 +127,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     // Yaw Limits -- 28000, 35000
     // Pitch Limits -- 20000, 55000
+    // Slide Limits -- 26000, 39500
     
     func startControl() {
         
@@ -210,6 +211,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         super.viewDidLoad()
         self.ipAddress.placeholder = "10.21.160.61"
+        self.ipAddress.attributedPlaceholder = AttributedString(string:"10.21.160.61",
+                                                               attributes:[NSForegroundColorAttributeName: UIColor.lightText()])
+        self.ipAddress.textColor = UIColor.white()
+        self.ipAddress.tintColor = UIColor.orange()
         self.ipAddress.delegate = self
         self.ipAddress.keyboardType = UIKeyboardType.numbersAndPunctuation
         self.ipAddress.returnKeyType = UIReturnKeyType.done
