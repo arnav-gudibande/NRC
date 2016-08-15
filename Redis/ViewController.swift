@@ -16,7 +16,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     let redisServer = Redis()
     let manager = CMMotionManager()
     let yscale = 150
-    let pscale = 1000
+    let pscale = 700
     var yaw = 32768
     var pitch = 32768
     var i = 2
