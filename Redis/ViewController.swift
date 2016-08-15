@@ -210,8 +210,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        self.ipAddress.placeholder = "10.21.160.61"
-        self.ipAddress.attributedPlaceholder = AttributedString(string:"10.21.160.61",
+        self.ipAddress.placeholder = "10.21.162.85"
+        self.ipAddress.attributedPlaceholder = AttributedString(string:"10.21.162.85",
                                                                attributes:[NSForegroundColorAttributeName: UIColor.lightText()])
         self.ipAddress.textColor = UIColor.white()
         self.ipAddress.tintColor = UIColor.orange()
